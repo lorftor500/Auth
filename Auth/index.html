@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Авторизация и регистрация</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="form-btns">
+                <button class="btn active" id="loginBtn">Вход</button>
+                <button class="btn" id="registerBtn">Регистрация</button>
+            </div>
+            
+            <form id="loginForm" class="form active-form">
+                <h2>Авторизация</h2>
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Пароль</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="submit-btn">Войти</button>
+                <div id="loginMessage" class="message"></div>
+            </form>
+            
+            <form id="registerForm" class="form">
+                <h2>Регистрация</h2>
+                <div class="form-group">
+                    <label for="regName">Имя</label>
+                    <input type="text" id="regName" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Пароль</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="regConfirmPassword">Подтвердите пароль</label>
+                    <input type="password" id="regConfirmPassword" required>
+                </div>
+                <button type="submit" class="submit-btn">Зарегистрироваться</button>
+                <div id="registerMessage" class="message"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Переключение между формами
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        
+        loginBtn.addEventListener('click', () => {
+            loginBtn.classList.add('active');
+            registerBtn.classList.remove('active');
+            loginForm.classList.add('active-form');
+            registerForm.classList.remove('active-form');
+        });
+        
+        registerBtn.addEventListener('click', () => {
+            registerBtn.classList.add('active');
+            loginBtn.classList.remove('active');
+            registerForm.classList.add('active-form');
+            loginForm.classList.remove('active-form');
+        });
+        
+        // Обработка формы регистрации
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            
+            const message = document.getElementById('registerMessage');
+            
+            if (password !== confirmPassword) {
+                message.textContent = 'Пароли не совпадают!';
+                message.style.color = 'red';
+                return;
+            }
+            
+            if (password.length < 6) {
+                message.textContent = 'Пароль должен содержать минимум 6 символов!';
+                message.style.color = 'red';
+                return;
+            }
+            
+            // В реальном приложении здесь был бы запрос к серверу
+            message.textContent = 'Регистрация успешна! Теперь вы можете войти.';
+            message.style.color = 'green';
+            
+            // Очищаем форму
+            registerForm.reset();
+            
+            // Переключаем на форму входа
+            setTimeout(() => {
+                loginBtn.click();
+            }, 1500);
+        });
+        
+        // Обработка формы входа
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const message = document.getElementById('loginMessage');
+            
+            // В реальном приложении здесь была бы проверка с сервером
+            if (email && password) {
+                message.textContent = 'Вход выполнен успешно!';
+                message.style.color = 'green';
+            } else {
+                message.textContent = 'Неверный email или пароль!';
+                message.style.color = 'red';
+            }
+            
+            // Очищаем форму
+            setTimeout(() => {
+                loginForm.reset();
+                message.textContent = '';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
